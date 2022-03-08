@@ -1,9 +1,25 @@
 {% extends 'base.html'%}
-<html>
-    <head>
-        <title> Hello</title>
-    </head>
-    <body>
-        <h1>Hello World</h1>
-    </body>
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+</head>
+<body>
+    <section class="bg-dark text-light p-5 text-center">
+        <div class="container-fluid">
+            <div class="d-sm-flex">
+                <div>
+                    <h1>Welcome to <span class="text-warning">60Seconds</span></h1>
+                    <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique, temporibus.</p>
+                </div>
+                <img class="img-fluid img-thumbnail" src="{{ url_for('static', filename='photos/randomphoto.jpeg') }}" alt="">
+            </div>
+        </div>
+    </section>
+    
+</body>
 </html>
+{% endblock %}

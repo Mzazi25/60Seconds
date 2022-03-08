@@ -25,20 +25,6 @@ def index():
     '''
     return render_template('index.html')
 
-@main.route('/dashboard', methods=['GET', 'POST'])
-@login_required
-def dashboard():
-    likes = PostLike.query.all()
-    form = Comments()
-    if form.validate_on_submit():
-        new_comment = PostLike(comment=form.comment.data,users_id=current_user.id)
-        db.session.add(new_comment)
-        db.session.commit()
-        return redirect(url_for('main.dashboard'))
-    pitch = Pitch.query.all()
-    user = User.query.all()
-    return render_template('dashboard.html',likes=likes, user=user, form=form,pitch=pitch)
-
 @main.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
