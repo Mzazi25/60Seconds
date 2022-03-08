@@ -1,9 +1,13 @@
 from flask import render_template,request,redirect,url_for,abort
 from . import main
-from .forms import Pitches, Comments
+from flask.helpers import flash, url_for
+from flask_wtf import Form
+from wtforms import BooleanField, PasswordField, TextAreaField, validators
+
+from .forms import UpdateProfile,Pitches,Comments
 from ..models import User, Pitch, PostLike
 from flask_login import login_required,current_user
-from .. import db,login_manager
+from .. import db,login_manager,photos
 
 # creating an auth instance
 @login_manager.user_loader
@@ -35,12 +39,54 @@ def dashboard():
     user = User.query.all()
     return render_template('dashboard.html',likes=likes, user=user, form=form,pitch=pitch)
 
-@main.route('/user/<uname>')
+@main.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    
+    # fetch data
+    pitch = Pitch.query.all()
+    user = User.query.all()
+    form = Pitches()
 
-def profile(uname):
+    if form.validate_on_submit():
+        category = form.category.data
+        message = form.message.data
+
+        pitch = Pitch(category=category, message=message,user_id=current_user.id)
+
+        # add data to db
+        db.session.add(pitch)
+        db.session.commit()
+        return redirect(url_for('.profile'))
+    return render_template("profile/profile.html", user = user,pitch=pitch,form=form)
+
+@main.route('/user/<uname>/update',methods = ['GET','POST'])
+@login_required
+def update_profile(uname):
     user = User.query.filter_by(username = uname).first()
-
     if user is None:
         abort(404)
 
-    return render_template("profile/profile.html", user = user)
+    form = UpdateProfile()
+
+    if form.validate_on_submit():
+
+        user.bio = form.bio.data
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('.profile',uname=user.username))
+
+    return render_template('profile/update.html',form =form)
+
+@main.route('/user/<uname>/update/pic',methods= ['POST'])
+@login_required
+def update_pic(uname):
+    user = User.query.filter_by(username = uname).first()
+    if 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path = f'photos/{filename}'
+        user.profile_pic_path = path
+        db.session.commit()
+    return redirect(url_for('main.profile',uname=uname))
