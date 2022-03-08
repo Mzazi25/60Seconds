@@ -36,7 +36,7 @@ This is an error page indicating that the browser was able to communicate with s
 
 
 ### Live link
-Visit the application on https://.herokuapp.com/
+Visit the application on https://pitches2022.herokuapp.com/
 
 ### Development
 #### Making modifications
