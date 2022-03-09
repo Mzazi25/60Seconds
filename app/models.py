@@ -35,6 +35,9 @@ class User(UserMixin,db.Model):
 
 class Pitch (db.Model):
     __tablename__= "pitchs"
+    """ 
+    Added class for Pitches
+    """
 
     id = db.Column(db.Integer, primary_key=True, autoincrement = True)
     message = db.Column(db.String(), unique=False,nullable=False)
