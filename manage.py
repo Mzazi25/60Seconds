@@ -1,3 +1,4 @@
+from http import server
 from app import create_app,db
 from app.models import User,Pitch,PostLike
 from flask_script import Manager,Server
@@ -16,7 +17,6 @@ manager.add_command('db',MigrateCommand)
 manager.add_command('server',Server)
 @manager.shell
 def make_shell_context():
-    return dict(app = app,db = db,User = User)
+    return dict(app = app,db = db,User = User,Pitch=Pitch,PostLike=PostLike)
 if __name__ == '__main__':
-    app.debug= True
-    manager.run()
+    manager.run() 

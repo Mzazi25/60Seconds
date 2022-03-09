@@ -6,6 +6,7 @@ class Config:
     """
     SECRET_KEY = os.environ.get('SECRET_KEY')
     UPLOADED_PHOTOS_DEST ='app/static/photos'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://user:mzazi25@localhost/watchlist'
 
     #  email configurations
     MAIL_SERVER = 'smtp.googlemail.com'
@@ -17,7 +18,7 @@ class Config:
 
 
 class ProdConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace("://", "ql://", 1)
+    pass
 
        
    
@@ -29,4 +30,5 @@ config_options = {
 'development':DevConfig,
 'production':ProdConfig
 }
+
 
