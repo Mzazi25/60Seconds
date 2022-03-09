@@ -8,6 +8,7 @@ from  flask_migrate import Migrate, MigrateCommand
 
 # Creating app instance
 app = create_app('production')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 
 manager = Manager(app)
 manager.add_command('server',Server)
